@@ -35,6 +35,15 @@ export default function Home() {
   const [responseStatus, setResponseStatus] = useState('success');
   const [open, setOpen] = useState(false);
 
+  const clearForm = async () => {
+    
+        setSequence("");
+        setCode("");
+        setName("");
+        setStatus("");
+        setAction("");
+  }
+
   const submitForm2 = async () => {
     console.log("Submitting form with Axios...");
 
@@ -141,7 +150,23 @@ export default function Home() {
         <DataTableDemo>
           <Dialog  open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-            <Button onClick={() => setOpen(true)}>Create</Button>
+            <div className="flex items-center justify-between">
+              <div className="mx-2">
+                <Button onClick={() => setOpen(true)}>Create</Button>
+              </div>
+              <div className="mx-2">
+                <Button onClick={() => setOpen(true)}>print</Button>
+              </div>
+              <div className="mx-2">
+                <Button onClick={() => setOpen(true)}>export to excel</Button>
+              </div>
+              <div className="mx-2">
+              <Button onClick={() => setOpen(true)}>close and search</Button>
+              </div>
+            </div>
+            {/* <Button onClick={() => setOpen(true)}>print</Button>
+            <Button onClick={() => setOpen(true)}>export to excel</Button>
+            <Button onClick={() => setOpen(true)}>close and search</Button> */}
               {/* <Button variant="outline">Create</Button> */}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
@@ -210,7 +235,10 @@ export default function Home() {
                     <Input onChange={(e) => setAction(e.target.value)}  id="action" value={action} className="col-span-3" />
                   </div>
                 </div>
+                
                 <DialogFooter>
+                  <Button type="submit" onClick={() => clearForm()}> Clear </Button>
+                  <Button type="submit" onClick={() => setOpen(false)}> Close </Button>
                   <Button type="submit" onClick={() => submitForm2()}> { loading ? 'loading' : 'Save changes'}</Button>
                 </DialogFooter>
               
