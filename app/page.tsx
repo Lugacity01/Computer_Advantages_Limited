@@ -1,9 +1,9 @@
 'use client';
 
-import * as DialogPrimitive from "@radix-ui/react-dialog"
-import ChartDashboard from "@/othercomponents/chartdashboard";
+// import * as DialogPrimitive from "@radix-ui/react-dialog"
+// import ChartDashboard from "@/othercomponents/chartdashboard";
 import { MenubarDemo } from "@/othercomponents/menubar";
-import { DialogDemo } from "@/othercomponents/openpopup";
+// import { DialogDemo } from "@/othercomponents/openpopup";
 import { DataTableDemo } from "@/othercomponents/table";import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -16,12 +16,12 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import Image from "next/image";
+// import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner"
 import axios from "axios";
-import { FaCircleCheck } from "react-icons/fa6";
-import { XIcon } from "lucide-react"
+// import { FaCircleCheck } from "react-icons/fa6";
+// import { XIcon } from "lucide-react"
 
 
 export default function Home() {
@@ -32,7 +32,7 @@ export default function Home() {
   const [status, setStatus] = useState("");
   const [action, setAction] = useState("");
   const [loading, setLoading] = useState(false);
-  const [responseStatus, setResponseStatus] = useState('success');
+  // const [responseStatus, setResponseStatus] = useState('success');
   const [open, setOpen] = useState(false);
 
   const clearForm = async () => {
@@ -67,7 +67,7 @@ export default function Home() {
       });
 
       console.log("Response: ", response);
-      setResponseStatus('success')
+      // setResponseStatus('success')
 
       setOpen(false);
 
@@ -84,7 +84,7 @@ export default function Home() {
       }
     } catch (error) {
       
-      setResponseStatus('error')
+      // setResponseStatus('error')
       console.log("Error: ", error);
       toast.error("Failed to submit the form. Please try again.");
     } finally {
@@ -92,55 +92,55 @@ export default function Home() {
     }
   };
 
-    let submitForm = async () => {
+    // let submitForm = async () => {
 
-      console.log("Submitting form...");
+    //   console.log("Submitting form...");
 
-      if (!sequence || !code || !name || !status || !action) {
-        console.log("All fields are required!");
-        toast.error("All fields are required!");
-        return;
-      }
+    //   if (!sequence || !code || !name || !status || !action) {
+    //     console.log("All fields are required!");
+    //     toast.error("All fields are required!");
+    //     return;
+    //   }
 
-      console.log("Form data: ")
+    //   console.log("Form data: ")
 
-      setLoading(true);
+    //   setLoading(true);
 
-      try {
-        const response = await fetch("http://localhost:5000", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            sequence,
-            code,
-            name,
-            status,
-            action,
-          }),
-        });
+    //   try {
+    //     const response = await fetch("http://localhost:5000", {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         sequence,
+    //         code,
+    //         name,
+    //         status,
+    //         action,
+    //       }),
+    //     });
 
-        console.log("Response: ", response);
-        // if (response.message === "Maintenance created") {
-        //   toast.success("Form submitted successfully!");
-        //   // Reset the form
-        //   setSequence("");
-        //   setCode("");
-        //   setName("");
-        //   setStatus("");
-        //   setAction("");
-        // } else {
-        //   const errorData = await response.json();
-        //   toast.error(`Error: ${errorData.message || "Something went wrong"}`);
-        // }
-      } catch (error) {
-        console.log("Error: ", error);
-        toast.error("Failed to submit the form. Please try again.");
-      } finally {
-        setLoading(false);
-      }
-    };
+    //     console.log("Response: ", response);
+    //     // if (response.message === "Maintenance created") {
+    //     //   toast.success("Form submitted successfully!");
+    //     //   // Reset the form
+    //     //   setSequence("");
+    //     //   setCode("");
+    //     //   setName("");
+    //     //   setStatus("");
+    //     //   setAction("");
+    //     // } else {
+    //     //   const errorData = await response.json();
+    //     //   toast.error(`Error: ${errorData.message || "Something went wrong"}`);
+    //     // }
+    //   } catch (error) {
+    //     console.log("Error: ", error);
+    //     toast.error("Failed to submit the form. Please try again.");
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -200,7 +200,7 @@ export default function Home() {
                 <DialogHeader>
                   <DialogTitle>Create a record</DialogTitle>
                   <DialogDescription>
-                    Make changes to your profile here. Click save when you're done.
+                    Make changes to your profile here. Click save when you are done.
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
