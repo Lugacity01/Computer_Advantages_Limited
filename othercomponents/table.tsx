@@ -36,50 +36,106 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
+// const data: Payment[] = [
+//   {
+//     id: "m5gr84i9",
+//     weightKG: 316,
+//     status: "success",
+//     weightFactor: "1230",
+//     engine: "1230"
+//   },
+//   {
+//     id: "3u1reuv4",
+//     weightKG: 242,
+//     status: "success",
+//     weightFactor: "1230",
+//     engine: "1230"
+//   },
+//   {
+//     id: "derv1ws0",
+//     weightKG: 837,
+//     status: "processing",
+//     weightFactor: "1230",
+//     engine: "1230"
+//   },
+//   {
+//     id: "5kma53ae",
+//     weightKG: 874,
+//     status: "success",
+//     weightFactor: "1230",
+//     engine: "1230"
+//   },
+//   {
+//     id: "bhqecj4p",
+//     weightKG: 721,
+//     status: "failed",
+//     weightFactor: "1230",
+//     engine: "1230",
+//   },
+// ]
+
+
 const data: Payment[] = [
   {
     id: "m5gr84i9",
-    weightKG: 316,
-    status: "success",
-    weightFactor: "1230",
-    engine: "1230"
+    sequence: "Yieqrweqrnka",
+    code: 1234234,
+    name: "success",
+    status: "pending",
+    action: "1230"
   },
   {
-    id: "3u1reuv4",
-    weightKG: 242,
-    status: "success",
-    weightFactor: "1230",
-    engine: "1230"
+    id: "m5gr84i9",
+    sequence: "Yieqrweqrnka",
+    code: 1234234,
+    name: "success",
+    status: "pending",
+    action: "1230"
   },
   {
-    id: "derv1ws0",
-    weightKG: 837,
-    status: "processing",
-    weightFactor: "1230",
-    engine: "1230"
+    id: "m5gr84i9",
+    sequence: "Yieqrweqrnka",
+    code: 1234234,
+    name: "success",
+    status: "pending",
+    action: "1230"
   },
   {
-    id: "5kma53ae",
-    weightKG: 874,
-    status: "success",
-    weightFactor: "1230",
-    engine: "1230"
+    id: "m5gr84i9",
+    sequence: "Yieqrweqrnka",
+    code: 1234234,
+    name: "success",
+    status: "pending",
+    action: "1230"
   },
   {
-    id: "bhqecj4p",
-    weightKG: 721,
-    status: "failed",
-    weightFactor: "1230",
-    engine: "1230",
+    id: "m5gr84i9",
+    sequence: "Yieqrweqrnka",
+    code: 1234234,
+    name: "success",
+    status: "pending",
+    action: "1230"
+  },
+  {
+    id: "m5gr84i9",
+    sequence: "Yieqrweqrnka",
+    code: 1234234,
+    name: "success",
+    status: "pending",
+    action: "1230"
   },
 ]
 
 export type Payment = {
   id: string
-  weightKG: number
+  name: string
+  action: string
+  sequence: string
+  code: number
+  // weightKG: number
   status: "pending" | "processing" | "success" | "failed"
-  weightFactor: string,
-  engine: string
+  // weightFactor: string,
+  // engine: string
 }
 
 export const columns: ColumnDef<Payment>[] = [
@@ -113,42 +169,57 @@ export const columns: ColumnDef<Payment>[] = [
     ),
   },
   {
-    accessorKey: "engine",
-    header: "Engine",
+    accessorKey: "code",
+    header: "code",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
+      <div className="capitalize">{row.getValue("code")}</div>
     ),
   },
   {
-    accessorKey: "weightFactor",
+    accessorKey: "sequence",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          weightFactor
+          sequence
           <ArrowUpDown />
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("weightFactor")}</div>,
+    cell: ({ row }) => <div className="lowercase">{row.getValue("sequence")}</div>,
   },
   {
-    accessorKey: "weightKG",
-    header: () => <div className="text-right">weightKG</div>,
-    cell: ({ row }) => {
-      const weightKG = parseFloat(row.getValue("weightKG"))
-
-      // Format the weightKG as a dollar weightKG
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(weightKG)
-
-      return <div className="text-right font-medium">{formatted}</div>
+    accessorKey: "name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          name
+          <ArrowUpDown />
+        </Button>
+      )
     },
+    cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
   },
+  // {
+  //   accessorKey: "name",
+  //   header: () => <div className="text-right">name</div>,
+  //   cell: ({ row }) => {
+  //     // const name = parseFloat(row.getValue("name"))
+
+  //     // // Format the name as a dollar name
+  //     // const formatted = new Intl.NumberFormat("en-US", {
+  //     //   style: "currency",
+  //     //   currency: "USD",
+  //     // }).format(name)
+
+  //     return <div className="text-right font-medium">{name}</div>
+  //   },
+  // },
   {
     id: "actions",
     enableHiding: false,
@@ -168,11 +239,11 @@ export const columns: ColumnDef<Payment>[] = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
-              Copy payment ID
+              Update
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>Delete</DropdownMenuItem>
+            {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       )
@@ -213,10 +284,10 @@ export function DataTableDemo({children}: {children: React.ReactNode}) {
     {/* <div className="w-full rounded-md border bg-white shadow"> */}
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter weightFactors..."
-          value={(table.getColumn("weightFactor")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter sequences..."
+          value={(table.getColumn("sequence")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("weightFactor")?.setFilterValue(event.target.value)
+            table.getColumn("sequence")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
