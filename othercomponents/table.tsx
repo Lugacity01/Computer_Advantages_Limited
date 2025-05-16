@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown, ChevronDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -21,12 +21,10 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
+import axios from "axios";
 import {
   Table,
   TableBody,
@@ -35,96 +33,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { EditDialog } from "./EditDialog"
+import { Label } from "@/components/ui/label"
+import {
+  DialogFooter,
+} from "@/components/ui/dialog"
 
-// const data: Payment[] = [
-//   {
-//     id: "m5gr84i9",
-//     weightKG: 316,
-//     status: "success",
-//     weightFactor: "1230",
-//     engine: "1230"
-//   },
-//   {
-//     id: "3u1reuv4",
-//     weightKG: 242,
-//     status: "success",
-//     weightFactor: "1230",
-//     engine: "1230"
-//   },
-//   {
-//     id: "derv1ws0",
-//     weightKG: 837,
-//     status: "processing",
-//     weightFactor: "1230",
-//     engine: "1230"
-//   },
-//   {
-//     id: "5kma53ae",
-//     weightKG: 874,
-//     status: "success",
-//     weightFactor: "1230",
-//     engine: "1230"
-//   },
-//   {
-//     id: "bhqecj4p",
-//     weightKG: 721,
-//     status: "failed",
-//     weightFactor: "1230",
-//     engine: "1230",
-//   },
-// ]
+async function deleteItemById(id: string) {
+  try {
+    const response = await axios.delete("http://localhost:5000", {
+      data: { id },
+    });
 
+    console.log("Item deleted successfully:", response.data);
+  } catch (error) {
+    console.error("Error deleting item:", error);
+  }
+}
 
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    sequence: "Yieqrweqrnka",
-    code: 1234234,
-    name: "success",
-    status: "pending",
-    action: "1230"
-  },
-  {
-    id: "m5gr84i9",
-    sequence: "Yieqrweqrnka",
-    code: 1234234,
-    name: "success",
-    status: "pending",
-    action: "1230"
-  },
-  {
-    id: "m5gr84i9",
-    sequence: "Yieqrweqrnka",
-    code: 1234234,
-    name: "success",
-    status: "pending",
-    action: "1230"
-  },
-  {
-    id: "m5gr84i9",
-    sequence: "Yieqrweqrnka",
-    code: 1234234,
-    name: "success",
-    status: "pending",
-    action: "1230"
-  },
-  {
-    id: "m5gr84i9",
-    sequence: "Yieqrweqrnka",
-    code: 1234234,
-    name: "success",
-    status: "pending",
-    action: "1230"
-  },
-  {
-    id: "m5gr84i9",
-    sequence: "Yieqrweqrnka",
-    code: 1234234,
-    name: "success",
-    status: "pending",
-    action: "1230"
-  },
-]
 
 export type Payment = {
   id: string
@@ -138,7 +64,157 @@ export type Payment = {
   // engine: string
 }
 
-export const columns: ColumnDef<Payment>[] = [
+// export const columns: ColumnDef<Payment>[] = [
+//   {
+//     id: "select",
+//     header: ({ table }) => (
+//       <Checkbox
+//         checked={
+//           table.getIsAllPageRowsSelected() ||
+//           (table.getIsSomePageRowsSelected() && "indeterminate")
+//         }
+//         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+//         aria-label="Select all"
+//       />
+//     ),
+//     cell: ({ row }) => (
+//       <Checkbox
+//         checked={row.getIsSelected()}
+//         onCheckedChange={(value) => row.toggleSelected(!!value)}
+//         aria-label="Select row"
+//       />
+//     ),
+//     enableSorting: false,
+//     enableHiding: false,
+//   },
+//   {
+//     accessorKey: "status",
+//     header: "Status",
+//     cell: ({ row }) => (
+//       <div className="capitalize">{row.getValue("status")}</div>
+//     ),
+//   },
+//   {
+//     accessorKey: "code",
+//     header: "code",
+//     cell: ({ row }) => (
+//       <div className="capitalize">{row.getValue("code")}</div>
+//     ),
+//   },
+//   {
+//     accessorKey: "sequence",
+//     header: ({ column }) => {
+//       return (
+//         <Button
+//           variant="ghost"
+//           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+//         >
+//           sequence
+//           <ArrowUpDown />
+//         </Button>
+//       )
+//     },
+//     cell: ({ row }) => <div className="lowercase">{row.getValue("sequence")}</div>,
+//   },
+//   {
+//     accessorKey: "name",
+//     header: ({ column }) => {
+//       return (
+//         <Button
+//           variant="ghost"
+//           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+//         >
+//           name
+//           <ArrowUpDown />
+//         </Button>
+//       )
+//     },
+//     cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
+//   },
+//   {
+//     accessorKey: "edit",
+//     header: "Edit",
+//     cell: ({}) => <Button
+//           variant="warning"
+//           onClick={() => {}}
+//         >
+//           edit
+//         </Button>
+//   },
+//   {
+//     accessorKey: "delete",
+//     header: "Delete",
+//     cell: ({row}) => {
+
+//         let rowData = row.original
+//         return (
+
+//           <Button
+//           variant="destructive"
+//           onClick={() => {deleteItemById(rowData.id)}}
+//           >
+//           delete
+//         </Button>
+//         )
+//       }
+//   },
+// ]
+// editingItem={editingItem ?? ''} setEditingItem={setEditingItem}
+export function DataTableDemo({data, children}: {data:any, editingItem?:any, setEditingItem?:any, children: React.ReactNode}) {
+    
+  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  )
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = React.useState({})
+  const [editingItem, setEditingItem] = React.useState<Payment | null>(null)
+  const [isEditDialogOpen, setIsEditDialogOpen] = React.useState(false)
+  
+    const [sequence, setSequence] = React.useState('');
+    const [code, setCode] = React.useState<string | number>('');
+    const [name, setName] = React.useState('');
+    const [status, setStatus] = React.useState('');
+    const [itemID, setitemID] = React.useState('');
+      const [isSaving, setIsSaving] = React.useState(false);
+      
+  // Function to save edits
+  const handleSaveEdit = async ({sequence, status, name, code, itemID}:{sequence:string, status:string, name:string, code:string | number, itemID:string}) => {
+    setIsSaving(true);
+    try {
+      // Call your API to update the item
+      const response = await axios.put(`http://localhost:5000/`, { id:itemID, sequence, status, name, code, action: "update" });
+      setIsEditDialogOpen(false)
+      setIsSaving(false);
+      // In a real app, you would update your data state here or refetch
+      console.log("Item updated successfully")
+    } catch (error) {
+      console.error("Error updating item:", error)
+      throw error // This will be caught by the dialog
+    }
+  }
+
+    console.log("sequence", sequence)
+    console.log("editingItem", editingItem)
+
+    React.useEffect(() => {
+      if (editingItem) {
+        setSequence(editingItem.sequence);
+        setCode(editingItem.code);
+        setName(editingItem.name);
+        setStatus(editingItem.status);
+        setitemID(editingItem.id)
+      }
+    }, [editingItem]);
+
+  // Function to handle edit
+  const handleEdit = (item: Payment) => {
+    setEditingItem(item)
+    setIsEditDialogOpen(true)
+  }
+
+  const columns: ColumnDef<Payment>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -205,60 +281,43 @@ export const columns: ColumnDef<Payment>[] = [
     },
     cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
   },
-  // {
-  //   accessorKey: "name",
-  //   header: () => <div className="text-right">name</div>,
-  //   cell: ({ row }) => {
-  //     // const name = parseFloat(row.getValue("name"))
-
-  //     // // Format the name as a dollar name
-  //     // const formatted = new Intl.NumberFormat("en-US", {
-  //     //   style: "currency",
-  //     //   currency: "USD",
-  //     // }).format(name)
-
-  //     return <div className="text-right font-medium">{name}</div>
-  //   },
-  // },
   {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original
+    accessorKey: "edit",
+    header: "Edit",
+    cell: ({row}) => {
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+        let rowData = row.original
+
+        console.log("rowData", rowData)
+        
+        return (
+          <Button
+            variant="warning"
+            onClick={() => handleEdit(rowData)}
             >
-              Update
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Delete</DropdownMenuItem>
-            {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
+            edit
+          </Button>
+        )
+      }
   },
+  {
+    accessorKey: "delete",
+    header: "Delete",
+    cell: ({row}) => {
+
+        let rowData = row.original
+        return (
+          <Button
+            variant="destructive"
+            onClick={() => {deleteItemById(rowData.id)}}
+            >
+            delete
+          </Button>
+        )
+      }
+  }
 ]
 
-export function DataTableDemo({children}: {children: React.ReactNode}) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
     data,
@@ -279,9 +338,9 @@ export function DataTableDemo({children}: {children: React.ReactNode}) {
     },
   })
 
+
   return (
     <div className="w-full">
-    {/* <div className="w-full rounded-md border bg-white shadow"> */}
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter sequences..."
@@ -393,6 +452,71 @@ export function DataTableDemo({children}: {children: React.ReactNode}) {
           </Button>
         </div>
       </div>
+
+      <EditDialog
+        open={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+      > 
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Name
+            </Label>
+            <Input
+              id="name"
+              name="name"
+              value={name || ""}
+              onChange={(e) => setName(e.target.value)}
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="sequence" className="text-right">
+              Sequence
+            </Label>
+            <Input
+              id="sequence"
+              name="sequence"
+              value={sequence || ""}
+              onChange={(e) => setSequence(e.target.value)}   
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="code" className="text-right">
+              Code
+            </Label>
+            <Input
+              id="code"
+              name="code"
+              type="number"
+              value={code || ""}
+              onChange={(e) => setCode(e.target.value)}
+              className="col-span-3"
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="status" className="text-right">
+              Status
+            </Label>
+            <Input
+              id="status"
+              name="status"
+              value={status || ""}
+              onChange={(e) => setStatus(e.target.value)}
+              className="col-span-3"
+            />
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button type="submit" onClick={() => handleSaveEdit({sequence, status, name, code, itemID})} disabled={isSaving}>
+            {isSaving ? "Saving..." : "Save changes"}
+          </Button>
+        </DialogFooter>
+
+      </EditDialog>
+
     </div>
   )
 }

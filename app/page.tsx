@@ -20,15 +20,33 @@ import { Label } from "@/components/ui/label"
 import { useState } from "react";
 import { toast } from "sonner"
 import axios from "axios";
+import { useEffect } from "react";
 // import { FaCircleCheck } from "react-icons/fa6";
 // import { XIcon } from "lucide-react"
 
 
+
+export type Payment = {
+  id: string
+  name: string
+  action: string
+  sequence: string
+  code: number
+  // weightKG: number
+  status: "pending" | "processing" | "success" | "failed"
+  // weightFactor: string,
+  // engine: string
+}
+
+
 export default function Home() {
 
+  
+  const [editingItem, setEditingItem] = useState<Payment | null>(null)
   const [sequence, setSequence] = useState("");
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
+  const [data, setData] = useState("");
   const [status, setStatus] = useState("");
   const [action, setAction] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,6 +61,22 @@ export default function Home() {
         setStatus("");
         setAction("");
   }
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/all");
+      console.log("Fetched data: ", response.data);
+      setData(response.data);
+      // Handle the fetched data here
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+      toast.error("Failed to fetch data. Please try again.");
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const submitForm2 = async () => {
     console.log("Submitting form with Axios...");
@@ -147,22 +181,22 @@ export default function Home() {
         
         <MenubarDemo />
 
-        <DataTableDemo>
+        <DataTableDemo data={data} editingItem={editingItem ?? ''} setEditingItem={setEditingItem} >
           <Dialog  open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
             <div className="flex items-center justify-between">
               <div className="mx-2">
-                <Button onClick={() => setOpen(true)}>Create</Button>
+                <Button onClick={() => setOpen(true)}>Add new record</Button>
               </div>
               <div className="mx-2">
-                <Button onClick={() => setOpen(true)}>print</Button>
+                <Button onClick={() => {}}>print</Button>
               </div>
               <div className="mx-2">
                 <Button onClick={() => setOpen(true)}>export to excel</Button>
               </div>
-              <div className="mx-2">
-              <Button onClick={() => setOpen(true)}>close and search</Button>
-              </div>
+              {/* <div className="mx-2">
+              <Button onClick={() => {}}>close and search</Button>
+              </div> */}
             </div>
             {/* <Button onClick={() => setOpen(true)}>print</Button>
             <Button onClick={() => setOpen(true)}>export to excel</Button>
@@ -198,7 +232,7 @@ export default function Home() {
               <>
 
                 <DialogHeader>
-                  <DialogTitle>Create a record</DialogTitle>
+                  <DialogTitle>Add new record</DialogTitle>
                   <DialogDescription>
                     Make changes to your profile here. Click save when you are done.
                   </DialogDescription>
@@ -228,18 +262,18 @@ export default function Home() {
                     </Label>
                     <Input onChange={(e) => setStatus(e.target.value)} id="status" value={status} className="col-span-3" />
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
+                  {/* <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="username" className="text-right">
                       Action
                     </Label>
                     <Input onChange={(e) => setAction(e.target.value)}  id="action" value={action} className="col-span-3" />
-                  </div>
+                  </div> */}
                 </div>
                 
                 <DialogFooter>
+                  <Button type="submit" onClick={() => submitForm2()}> { loading ? 'loading' : 'Save Changes'}</Button>
                   <Button type="submit" onClick={() => clearForm()}> Clear </Button>
-                  <Button type="submit" onClick={() => setOpen(false)}> Close </Button>
-                  <Button type="submit" onClick={() => submitForm2()}> { loading ? 'loading' : 'Save changes'}</Button>
+                  <Button type="submit" onClick={() => setOpen(false)}> Close Form </Button>
                 </DialogFooter>
               
               </>
