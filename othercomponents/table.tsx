@@ -53,7 +53,8 @@ async function deleteItemById(id: string) {
 
 
 export type Payment = {
-  id: string
+  _id: string
+  // id?: string
   name: string
   action: string
   sequence: string
@@ -204,7 +205,7 @@ export function DataTableDemo({data, children}: {data:any, editingItem?:any, set
         setCode(editingItem.code);
         setName(editingItem.name);
         setStatus(editingItem.status);
-        setitemID(editingItem.id)
+        setitemID(editingItem._id)
       }
     }, [editingItem]);
 
@@ -309,7 +310,7 @@ export function DataTableDemo({data, children}: {data:any, editingItem?:any, set
         return (
           <Button
             variant="destructive"
-            onClick={() => {deleteItemById(rowData.id)}}
+            onClick={() => {deleteItemById(rowData._id)}}
             >
             delete
           </Button>
@@ -489,7 +490,6 @@ export function DataTableDemo({data, children}: {data:any, editingItem?:any, set
             <Input
               id="code"
               name="code"
-              type="number"
               value={code || ""}
               onChange={(e) => setCode(e.target.value)}
               className="col-span-3"

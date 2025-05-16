@@ -81,7 +81,7 @@ export default function Home() {
   const submitForm2 = async () => {
     console.log("Submitting form with Axios...");
 
-    if (!sequence || !code || !name || !status || !action) {
+    if (!sequence || !code || !name || !status) {
       console.log("All fields are required!");
       toast.error("All fields are required!");
       return;
@@ -97,7 +97,7 @@ export default function Home() {
         code,
         name,
         status,
-        action,
+        action: 'asd',
       });
 
       console.log("Response: ", response);
