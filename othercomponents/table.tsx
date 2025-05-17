@@ -38,18 +38,8 @@ import { Label } from "@/components/ui/label"
 import {
   DialogFooter,
 } from "@/components/ui/dialog"
+import { useFetchData } from "@/hooks/fetchallData"
 
-async function deleteItemById(id: string) {
-  try {
-    const response = await axios.delete("http://localhost:5000", {
-      data: { id },
-    });
-
-    console.log("Item deleted successfully:", response.data);
-  } catch (error) {
-    console.error("Error deleting item:", error);
-  }
-}
 
 
 export type Payment = {
@@ -179,15 +169,36 @@ export function DataTableDemo({data, children}: {data:any, editingItem?:any, set
     const [status, setStatus] = React.useState('');
     const [itemID, setitemID] = React.useState('');
       const [isSaving, setIsSaving] = React.useState(false);
+
+  
+    const { fetchData } = useFetchData();
+
+    
+async function deleteItemById(id: string) {
+  try {
+    const response = await axios.delete("https://backend-computer-advantage.vercel.app", {
+      data: { id },
+    });
+    
+      fetchData()
+
+    console.log("Item deleted successfully:", response.data);
+  } catch (error) {
+    console.error("Error deleting item:", error);
+  }
+}
+  
       
   // Function to save edits
   const handleSaveEdit = async ({sequence, status, name, code, itemID}:{sequence:string, status:string, name:string, code:string | number, itemID:string}) => {
     setIsSaving(true);
     try {
       // Call your API to update the item
-      const response = await axios.put(`http://localhost:5000/`, { id:itemID, sequence, status, name, code, action: "update" });
+      const response = await axios.put(`https://backend-computer-advantage.vercel.app`, { id:itemID, sequence, status, name, code, action: "update" });
       setIsEditDialogOpen(false)
       setIsSaving(false);
+      
+      fetchData()
       // In a real app, you would update your data state here or refetch
       console.log("Item updated successfully")
     } catch (error) {

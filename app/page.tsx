@@ -17,10 +17,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 // import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner"
 import axios from "axios";
-import { useEffect } from "react";
+import {useFetchData} from "@/hooks/fetchallData";
 // import { FaCircleCheck } from "react-icons/fa6";
 // import { XIcon } from "lucide-react"
 
@@ -38,6 +38,9 @@ export type Payment = {
   // engine: string
 }
 
+ 
+
+
 
 export default function Home() {
 
@@ -46,12 +49,23 @@ export default function Home() {
   const [sequence, setSequence] = useState("");
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
-  const [data, setData] = useState("");
+  // const [data, setData] = useState("");
   const [status, setStatus] = useState("");
   const [action, setAction] = useState("");
   const [loading, setLoading] = useState(false);
   // const [responseStatus, setResponseStatus] = useState('success');
   const [open, setOpen] = useState(false);
+
+
+  const { data, setData, fetchData } = useFetchData();
+
+
+  useEffect(() => {
+
+    fetchData()
+
+  }, [])
+
 
   const clearForm = async () => {
     
@@ -62,21 +76,9 @@ export default function Home() {
         setAction("");
   }
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/all");
-      console.log("Fetched data: ", response.data);
-      setData(response.data);
-      // Handle the fetched data here
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-      toast.error("Failed to fetch data. Please try again.");
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   const submitForm2 = async () => {
     console.log("Submitting form with Axios...");
@@ -92,7 +94,7 @@ export default function Home() {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000", {
+      const response = await axios.post("https://backend-computer-advantage.vercel.app", {
         sequence,
         code,
         name,
@@ -113,6 +115,9 @@ export default function Home() {
         setName("");
         setStatus("");
         setAction("");
+        
+        fetchData();
+
       } else {
         toast.error(`Error: ${response.data.message || "Something went wrong"}`);
       }
