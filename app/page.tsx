@@ -57,7 +57,7 @@ export default function Home() {
   const [open, setOpen] = useState(false);
 
 
-  const { data, setData, fetchData } = useFetchData();
+  const { data, fetchData } = useFetchData();
 
 
   useEffect(() => {
