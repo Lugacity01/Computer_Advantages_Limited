@@ -4,7 +4,8 @@
 // import ChartDashboard from "@/othercomponents/chartdashboard";
 import { MenubarDemo } from "@/othercomponents/menubar";
 // import { DialogDemo } from "@/othercomponents/openpopup";
-import { DataTableDemo } from "@/othercomponents/table";import { Button } from "@/components/ui/button"
+import { DataTableDemo } from "@/othercomponents/table";
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -108,7 +109,7 @@ export default function Home() {
       setOpen(false);
 
       if (response.data.message === "Maintenance created") {
-        toast.success("Form submitted successfully!");
+        toast.success("Record created successfully!");
         // Reset the form
         setSequence("");
         setCode("");
@@ -121,10 +122,15 @@ export default function Home() {
       } else {
         toast.error(`Error: ${response.data.message || "Something went wrong"}`);
       }
-    } catch (error) {
+    } catch (error:any) {
       
       // setResponseStatus('error')
       console.log("Error: ", error);
+
+      if(error?.status === 409) {
+        return toast.error("Code already exists, please use a different code.");
+      }
+
       toast.error("Failed to submit the form. Please try again.");
     } finally {
       setLoading(false);
@@ -237,7 +243,7 @@ export default function Home() {
               <>
 
                 <DialogHeader>
-                  <DialogTitle>Add new record</DialogTitle>
+                  <DialogTitle>XXX-Add new record</DialogTitle>
                   <DialogDescription>
                     Make changes to your profile here. Click save when you are done.
                   </DialogDescription>
@@ -253,7 +259,7 @@ export default function Home() {
                     <Label htmlFor="username" className="text-right">
                       Code
                     </Label>
-                    <Input onChange={(e) => setCode(e.target.value)} id="code" value={code} className="col-span-3" />
+                    <Input onChange={(e) => setCode(e.target.value.toUpperCase())} id="code" value={code} className="col-span-3" />
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="username" className="text-right">
