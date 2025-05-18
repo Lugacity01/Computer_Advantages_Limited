@@ -39,8 +39,6 @@ export type Payment = {
   // engine: string
 }
 
- 
-
 
 
 export default function Home() {
@@ -122,12 +120,12 @@ export default function Home() {
       } else {
         toast.error(`Error: ${response.data.message || "Something went wrong"}`);
       }
-    } catch (error:any) {
+    } catch (error) {
       
       // setResponseStatus('error')
       console.log("Error: ", error);
 
-      if(error?.status === 409) {
+      if (axios.isAxiosError(error) && error.response?.status === 409) {
         return toast.error("Code already exists, please use a different code.");
       }
 
